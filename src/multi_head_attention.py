@@ -4,10 +4,11 @@ from typing import Optional
 from torch import nn
 from torch.nn import functional as F
 
+
 class MultiHeadAttention(nn.Module):
     def __init__(self, hidden_dim: int, num_heads: int):
         """
-        :param hidden_dim: the emdbedding dim of the input X
+        :param hidden_dim: the embedding dim of the input X
         :param num_heads: the number of heads of attention
         """
         super().__init__()
@@ -64,15 +65,15 @@ class MultiHeadAttention(nn.Module):
         # compute value vector of each head
         values, attn = self.scaled_dot_product(q, k, v, src_padding_mask, future_mask)
 
-        # concate value vectors from all heads
+        # concat value vectors from all heads
         values = values.reshape(batch_size, sequence_length, hidden_dim)
 
-        # linearly transform the concate of all heads value vectors to the original hidden dim
+        # linearly transform the concat of all heads value vectors to the original hidden dim
         output = self.o_proj(values)
         return output
 
     def scaled_dot_product(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor,
-                           src_padding_mask: Optional[torch.BoolTensor] = None, future_mask: Optional[torch.BoolTensor] = None,):
+                           src_padding_mask: Optional[torch.BoolTensor] = None, future_mask: Optional[torch.BoolTensor] = None):
         """
         For cross-attention, the sequence length of q and (k,v) may differ as q is projected from decoder hidden states
         and kv from encoder hidden states.
