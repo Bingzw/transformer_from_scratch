@@ -1,11 +1,18 @@
 import math
 import torch
 
+
 class SinusoidEncoding(torch.nn.Module):
+    """
+    Mostly copied from
+    https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial6/Transformers_and_MHAttention.html
+    """
+
     def __init__(self, hidden_dim, max_len=5000):
         """
-        :param hidden_dim: hidden dimension of the input
-        :param max_len: max length of a sequence
+        Inputs
+            d_model - Hidden dimensionality of the input.
+            max_len - Maximum length of a sequence to expect.
         """
         super().__init__()
 
@@ -26,13 +33,13 @@ class SinusoidEncoding(torch.nn.Module):
 
     def forward(self, x):
         """
-        Adds positional embeddings to token embeddings
+        Adds positional embeddings to token embeddings.
         N = batch size
         L = sequence length
         E = embedding dim
 
-        :param x: token embeddings (N, L, E)
-        :return: token embeddings + positional embeddings. (N, L, E)
+        :param x: token embeddings. Shape: (N, L, E)
+        :return: token_embeddings + positional embeddings. Shape: (N, L, E)
         """
         x = x + self.pos_embed[:, : x.size(1)]
         return x
