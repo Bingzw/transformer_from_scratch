@@ -51,7 +51,7 @@ class MultiHeadAttention(nn.Module):
         and decoder cross-attention. (N, T, E) for decoder self-attention.
         """
 
-        batch_size, sequence_length, hidden_dim = x.size()
+        batch_size, sequence_length, hidden_dim = x.shape
 
         if encoder_hidden_states is None:
             q, k, v = self._self_attention_projection(x)
@@ -87,7 +87,7 @@ class MultiHeadAttention(nn.Module):
         :param x: Encoder or decoder hidden states. (N, S or T, E)
         :return: query, key and value vectors. (N, S or T, H, E/H)
         """
-        batch_size, sequence_length, _ = x.shape
+        batch_size, sequence_length, _ = x.size()
         qkv = self.qkv_proj(x)
         qkv = qkv.reshape(batch_size, sequence_length, self.num_heads, 3 * self.qkv_dim)
         q, k, v = qkv.chunk(3, dim=-1)
@@ -161,21 +161,19 @@ class MultiHeadAttention(nn.Module):
         :return: values (N, H, S or T, E/H), attention scores (N, H, S or T, S or T)
         """
 
+        d_k = q.size()[-1]
         # Compute attention logits. Dot product between each query and key vector, through one matrix multiplication.
         # Results in un-normalized attention scores for each position's query vector to each position's key vector
         # Result is (batch_size, num_heads, seq_length, seq_length)
-        attn_logits = torch.matmul(q, torch.transpose(k, -2, -1),)
-
+        attn_logits = torch.matmul(q, torch.transpose(k, -2, -1))
         # Scale logits by constant to create less spiky softmax distribution
-        attn_logits = attn_logits / math.sqrt(q.size()[-1])
-
+        attn_logits = attn_logits / math.sqrt(d_k)
         # Apply attention mask (for pad tokens and future-masking in cross-attention)
         if src_padding_mask is not None or future_mask is not None:
-            attn_logits = self.mask_logits(attn_logits, src_padding_mask, future_mask)  # type: ignore
+            attn_logits = self.mask_logits(attn_logits, src_padding_mask, future_mask)
 
         # Transform logits to attention probability distribution (one distribution per non-masked token index)
         attention = F.softmax(attn_logits, dim=-1)
-
         # Weighted sum of value vectors for each input token using attention scores -> new contextualized representation
         # (batch_size, num_heads, sequence_length, qkv_dim)
         values = torch.matmul(attention, v)
