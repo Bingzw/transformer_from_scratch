@@ -1,6 +1,7 @@
 import math
 import torch
 
+
 class SinusoidEncoding(torch.nn.Module):
     def __init__(self, hidden_dim, max_len=5000):
         """
