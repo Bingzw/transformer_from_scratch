@@ -39,8 +39,8 @@ class TestTransformerEncoder(unittest.TestCase):
         # Initialize a transformer encoder (qkv_dim is automatically set to hidden_dim // num_heads)
         with torch.no_grad():
             encoder = TransformerEncoder(
-                embedding=torch.nn.Embedding(en_vocab_size, 3),
-                hidden_dim=3,
+                embedding=torch.nn.Embedding(en_vocab_size, 6),
+                hidden_dim=6,
                 ff_dim=3,
                 num_heads=2,
                 num_layers=1,
@@ -54,7 +54,7 @@ class TestTransformerEncoder(unittest.TestCase):
             print(src_padding_mask)
             output = encoder.forward(input_batch, src_padding_mask=src_padding_mask)
             print(output)
-            self.assertEqual(output.shape, (2, 18, 512))
+            self.assertEqual(output.shape, (2, 18, 6))
             self.assertEqual(torch.any(torch.isnan(output)), False)
 
 
