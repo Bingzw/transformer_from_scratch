@@ -1,5 +1,5 @@
-from transformer_from_scratch.src.encoder import TransformerEncoder
-from transformer_from_scratch.src.vocabulary import Vocabulary
+from src.encoder import TransformerEncoder
+from src.vocabulary import Vocabulary
 import unittest
 import torch
 

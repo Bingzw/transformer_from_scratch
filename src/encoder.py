@@ -2,8 +2,8 @@ import math
 import torch
 from torch import nn
 from torch.nn.init import xavier_uniform_
-from transformer_from_scratch.src.multi_head_attention import MultiHeadAttention
-from transformer_from_scratch.src.positional_encodings import SinusoidEncoding
+from src.multi_head_attention import MultiHeadAttention
+from src.positional_encodings import SinusoidEncoding
 
 
 class TransformerEncoder(nn.Module):

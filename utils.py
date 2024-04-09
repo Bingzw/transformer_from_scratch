@@ -1,5 +1,6 @@
 import torch
 
+
 def construct_future_mask(seq_len: int):
     """
     Construct a binary mask that contains 1's for all valid connections and 0's for all outgoing future connections.

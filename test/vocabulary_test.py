@@ -1,4 +1,4 @@
-from transformer_from_scratch.src.vocabulary import Vocabulary
+from src.vocabulary import Vocabulary
 
 import unittest
 import torch

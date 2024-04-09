@@ -204,7 +204,8 @@ class MultiHeadAttention(nn.Module):
         """
         if src_padding_mask is not None:
             masked_logits = logits.masked_fill(
-                src_padding_mask[:, None, None, :] == 0, float("-inf")
+                src_padding_mask[:, None, None, :] == 0, float("-inf") # the False in src_padding_mask means it's
+                # padding, the attention connection is not needed. So we set it to -inf
             )
         if future_mask is not None:
             masked_logits = logits.masked_fill(future_mask == 0, float("-inf"))

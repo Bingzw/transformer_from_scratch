@@ -1,4 +1,4 @@
-from transformer_from_scratch.src.positional_encodings import SinusoidEncoding
+from src.positional_encodings import SinusoidEncoding
 
 import unittest
 import torch

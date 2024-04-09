@@ -1,7 +1,7 @@
 import unittest
 import torch
-from transformer_from_scratch.src.multi_head_attention import MultiHeadAttention
-from transformer_from_scratch.utils import construct_future_mask
+from src.multi_head_attention import MultiHeadAttention
+from utils import construct_future_mask
 
 
 class TestMultiHeadAttention(unittest.TestCase):
