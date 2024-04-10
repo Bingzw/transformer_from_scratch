@@ -67,12 +67,14 @@ class TestMultiHeadAttention(unittest.TestCase):
     def test_future_masking(self):
         batch_size, n_heads, seq_len = 2, 2, 3  # TODO add 2 heads and batch_size=3
         logits = torch.randn(batch_size, n_heads, seq_len, seq_len, dtype=torch.float)
+        print("logits: ", logits)
         future_mask = construct_future_mask(seq_len)
         self.assertEqual(future_mask.shape, (3, 3))
-
+        print("future_mask: ", future_mask)
         masked_logits = MultiHeadAttention(512, num_heads=n_heads).mask_logits(
             logits, future_mask=future_mask
         )
+        print("masked_logits: ", masked_logits)
         torch.testing.assert_close(
             torch.isinf(masked_logits) == 0,
             torch.BoolTensor(

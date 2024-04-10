@@ -51,7 +51,7 @@ class TestTransformerEncoder(unittest.TestCase):
                 en_vocab.batch_encode(batch, add_special_tokens=False, padding=True)
             )
             src_padding_mask = input_batch != en_vocab.token2index[en_vocab.PAD]
-            output = encoder.forward(input_batch, src_padding_mask=src_padding_mask)
+            output = encoder(input_batch, src_padding_mask=src_padding_mask)
             self.assertEqual(output.shape, (2, 18, 6))
             self.assertEqual(torch.any(torch.isnan(output)), False)
 

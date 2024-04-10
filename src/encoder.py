@@ -51,7 +51,7 @@ class TransformerEncoder(nn.Module):
         x = self.positional_encoding(x)
         x = self.dropout(x)
         for encoder_block in self.encoder_blocks:
-            x = encoder_block.forward(x, src_padding_mask=src_padding_mask)
+            x = encoder_block(x, src_padding_mask=src_padding_mask)
         return x
 
 
@@ -81,7 +81,7 @@ class EncoderBlock(nn.Module):
         :return: Updated intermediate encoder (contextualized) token embeddings. Shape: (N, S, E)
         """
         output = self.dropout1(
-            self.self_mha.forward(x, src_padding_mask=src_padding_mask)
+            self.self_mha(x, src_padding_mask=src_padding_mask)
         )
         x = self.layer_norm1(x + output)
 

@@ -108,8 +108,8 @@ class TransformerDecoder(nn.Module):
         x = self.dropout(x)
 
         for decoder_block in self.decoder_blocks:
-            x = decoder_block.forward(x, encoder_hidden_states=encoder_hidden_states,
-                                      src_padding_mask=src_padding_mask, future_mask=future_mask)
+            x = decoder_block(x, encoder_hidden_states=encoder_hidden_states,
+                              src_padding_mask=src_padding_mask, future_mask=future_mask)
 
         logits = self.output_layer(x)
         return logits
